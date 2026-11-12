@@ -14,7 +14,7 @@ const presentations = getPresentations();
         <ul>
             {presentations.map((presentation) => (
                 <li>
-                    <a href={`presenter/${presentation.slug}`}>
+                    <a href={`/presenter/${presentation.slug}`}>
                         <span class="title">{presentation.title}</span>
                         <span class="small">{presentation.slides.length} slides</span>
                     </a>
