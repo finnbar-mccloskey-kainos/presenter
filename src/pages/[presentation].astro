@@ -47,8 +47,10 @@ const numSlides = slideComponents.length;
 
     document.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowRight') {
+            if (currentSlide >= numSlides - 1) return;
             setSlide((currentSlide + 1) % numSlides);
         } else if (e.key === 'ArrowLeft') {
+            if (currentSlide <= 0) return;
             setSlide((currentSlide - 1 + numSlides) % numSlides);
         }
     });
@@ -70,6 +72,38 @@ const numSlides = slideComponents.length;
         width: 100vw;
         height: 100vh;
         margin: 0;
+    }
+
+    /* Print every slide on its own 16:9 page so the deck can be saved as a PDF. */
+    @media print {
+        :root {
+            font-size: 25px;
+        }
+
+        @page {
+            size: 1920px 1080px;
+            margin: 0;
+        }
+
+        .slides {
+            width: auto;
+            height: auto;
+        }
+
+        .slide-container {
+            position: relative;
+            width: 1920px;
+            height: 1080px;
+            /* Overrides the inline opacity set by the navigation script. */
+            opacity: 1 !important;
+            transition: none;
+            overflow: hidden;
+            break-after: page;
+        }
+
+        .slide-container:last-child {
+            break-after: auto;
+        }
     }
 </style>
 

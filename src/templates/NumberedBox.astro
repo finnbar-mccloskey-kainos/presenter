@@ -1,0 +1,19 @@
+---
+export interface Props {
+    number: number; title: string;
+}
+---
+<li>
+    <span>{Astro.props.number}</span>
+    <div>
+        <strong>{Astro.props.title}</strong>
+        <p><slot/></p>
+    </div>
+</li>
+
+<style>
+    li { display: flex; align-items: flex-start; gap: 1rem; padding: 1.2rem; border-radius: 0.5rem; background: #f3f5f8; }
+    li > span { display: grid; width: 2.5rem; height: 2.5rem; flex: 0 0 2.5rem; place-items: center; border-radius: 50%; background: var(--color-kainos-blue); color: white; font-weight: bold; }
+    strong { color: var(--color-kainos-blue); font-size: 1.5rem; }
+    li p { margin: 0.35rem 0 0; color: var(--color-kainos-grey); font-size: 1.25rem; line-height: 1.4; }
+</style>

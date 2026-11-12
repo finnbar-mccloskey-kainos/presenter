@@ -1,0 +1,34 @@
+---
+import Overlay from "../../templates/Overlay.astro";
+import Content from "../../templates/Content.astro";
+import Note from "../../templates/Note.astro";
+import NumberedBox from "../../templates/NumberedBox.astro";
+import Grid from "../../templates/Grid.astro";
+import Row from "../../templates/Row.astro";
+import Card from "../../templates/Card.astro";
+
+---
+<Overlay speaker="Finnbar" logo>
+    <Content>
+        <Grid>
+            <NumberedBox number={1} title="Step 1">
+                Description for step 1.
+            </NumberedBox>
+            <NumberedBox number={1} title="Step 1">
+                Description for step 1.
+            </NumberedBox>
+            <NumberedBox number={1} title="Step 1">
+                Description for step 1.
+            </NumberedBox>
+        </Grid>
+        <Note>
+            This is an additional note for the example.
+        </Note>
+        <Row>
+            <Card color="var(--color-kainos-bright-blue)">
+                <h3>Card Title</h3>
+                <p>Card description goes here.</p>
+            </Card>
+        </Row>
+    </Content>
+</Overlay>

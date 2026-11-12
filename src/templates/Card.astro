@@ -1,0 +1,14 @@
+---
+export interface Props {
+    color: string;
+}
+
+const { color } = Astro.props;
+---
+<article class="card" style={`--card-color: ${color}`}>
+    <slot />
+</article>
+
+<style>
+    .card { margin: 1rem; padding: 1rem; border-radius: 0.6rem; background: #f3f5f8; border-top: 0.5rem solid var(--card-color); }
+</style>

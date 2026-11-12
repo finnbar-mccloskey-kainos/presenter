@@ -1,0 +1,27 @@
+---
+export interface Props {
+    as?: "div" | "ol" | "ul";
+    columns?: number;
+    mobileColumns?: number;
+    gap?: string;
+}
+
+const {
+    as: Tag = "ol",
+    columns = 2,
+    mobileColumns = 1,
+    gap = "1.5rem",
+} = Astro.props;
+---
+<Tag
+    class="grid"
+    style={`--grid-columns: repeat(${columns}, minmax(0, 1fr)); --grid-mobile-columns: repeat(${mobileColumns}, minmax(0, 1fr)); --grid-gap: ${gap};`}
+>
+    <slot />
+</Tag>
+
+<style>
+    .grid { display: grid; grid-template-columns: var(--grid-columns); gap: var(--grid-gap); }
+    .grid:where(ol, ul) { margin: 0; padding: 0; list-style: none; }
+    @media (max-width: 800px) { .grid { grid-template-columns: var(--grid-mobile-columns); } }
+</style>
