@@ -1,0 +1,76 @@
+---
+import type { GetStaticPaths } from "astro";
+import Layout from "../layouts/Layout.astro";
+import { getPresentations, type Presentation } from "../lib/presentations";
+
+export const getStaticPaths = (() =>
+    getPresentations().map((presentation) => ({
+        params: { presentation: presentation.slug },
+        props: { presentation },
+    }))) satisfies GetStaticPaths;
+
+const { presentation } = Astro.props as { presentation: Presentation };
+const slideComponents = presentation.slides.map((slide) => slide.default);
+const numSlides = slideComponents.length;
+---
+
+<Layout title={presentation.title}>
+<div class="slides">
+    {slideComponents.map((Slide, i) => (
+        <div class="slide-container" id={`slide-${i}`}>
+            <Slide />
+        </div>
+    ))}
+</div>
+
+<script define:vars={{numSlides}}>
+    
+    function slideFromUrl() {
+        const slide = Number.parseInt(new URL(location.href).searchParams.get('slide') ?? '', 10);
+        return Number.isInteger(slide) && slide >= 1 && slide <= numSlides ? slide - 1 : 0;
+    }
+
+    let currentSlide = slideFromUrl();
+    setSlide(currentSlide);
+
+    function setSlide(index) {
+        currentSlide = index;
+        document.querySelectorAll('.slide-container').forEach((el, i) => {
+            el.style.opacity = i === currentSlide ? '1' : '0';
+        });
+
+        // URL uses 1-based slide numbers so permalinks read naturally.
+        const url = new URL(location.href);
+        url.searchParams.set('slide', String(currentSlide + 1));
+        history.replaceState({ slide: currentSlide }, '', url);
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') {
+            setSlide((currentSlide + 1) % numSlides);
+        } else if (e.key === 'ArrowLeft') {
+            setSlide((currentSlide - 1 + numSlides) % numSlides);
+        }
+    });
+
+</script>
+
+<style>
+    .slide-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        transition: opacity 0.5s ease;
+
+    }
+
+    .slides {
+        width: 100vw;
+        height: 100vh;
+        margin: 0;
+    }
+</style>
+
+</Layout>

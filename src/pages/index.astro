@@ -1,16 +1,69 @@
 ---
+import Layout from "../layouts/Layout.astro";
+import { getPresentations } from "../lib/presentations";
+
+const presentations = getPresentations();
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="Presentations">
+<main>
+    <h1>Presentations</h1>
+    {presentations.length === 0 ? (
+        <p>No presentations found. Add a folder of slides under <code>src/slides/</code>.</p>
+    ) : (
+        <ul>
+            {presentations.map((presentation) => (
+                <li>
+                    <a href={`/${presentation.slug}`}>
+                        <span class="title">{presentation.title}</span>
+                        <span class="small">{presentation.slides.length} slides</span>
+                    </a>
+                </li>
+            ))}
+        </ul>
+    )}
+</main>
+
+<style>
+    main {
+        min-height: 100vh;
+        box-sizing: border-box;
+        padding: 4rem;
+        color: var(--color-white);
+        background: linear-gradient(45deg, var(--color-kainos-blue), var(--color-kainos-green));
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+        gap: 1.5rem;
+    }
+
+    a {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+        background-color: var(--color-white);
+        color: var(--color-kainos-blue);
+        text-decoration: none;
+        transition: transform 0.2s ease;
+    }
+
+    a:hover, a:focus-visible {
+        transform: translateY(-4px);
+    }
+
+    .title {
+        font-size: 2rem;
+        font-weight: bold;
+    }
+
+    .small {
+        color: var(--color-kainos-grey);
+    }
+</style>
+</Layout>

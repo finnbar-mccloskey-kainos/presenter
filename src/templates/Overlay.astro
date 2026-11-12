@@ -1,0 +1,38 @@
+---
+export interface Props {
+    speaker: string;
+    logo?: true;
+    inverted?: true;
+}
+---
+
+<div class="speaker-overlay">
+    <slot />
+    <div class="speaker-label small" style={`color: ${Astro.props.inverted ? "white" : "var(--color-kainos-blue)"}`}>{Astro.props.speaker}</div>
+    {Astro.props.logo && <img class="logo" src={Astro.props.inverted ? "/logo-alt.png" : "/logo.png"} alt="Logo" />}
+</div>
+
+<style>
+    .speaker-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+    }
+
+    .speaker-label {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        padding: 1rem;
+    }
+
+    .logo {
+        height: 2rem;
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 1rem;
+    }
+</style>

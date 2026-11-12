@@ -1,0 +1,71 @@
+---
+import { getPresentation } from "../lib/presentations";
+
+const slides = getPresentation(Astro.params.presentation)?.slides ?? [];
+const sectionTitles = slides.flatMap((slide) =>
+    slide.sectionTitle ? [slide.sectionTitle] : [],
+);
+---
+
+<div class="background">
+    <div class="left">
+        <h1>Agenda</h1>
+    </div>
+    
+    <div class="right">
+        <ol>
+            {sectionTitles.map((title) => <li>{title}</li>)}
+        </ol>
+    </div>
+</div>
+
+<style>
+    h1 {
+        margin: 0;
+    }
+
+    .background {
+        width: 100%;
+        height: 100%;
+        background-color: var(--white);
+        color: var(--color-kainos-blue);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .left {
+        height: 100%;
+        flex: 1;
+        color: white;
+        background: linear-gradient(45deg, var(--color-kainos-blue), var(--color-kainos-green));
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .right {
+        height: 100%;
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    ol {
+        font-weight: bold;
+    }
+
+    li {
+        padding: 1rem;
+        counter-increment: li;
+        list-style: none;
+    }
+
+    ol li::before {
+        padding: 0.5rem;
+        margin-right: 0.5rem;
+        color: var(--color-kainos-green);
+        content: counter(li) ". ";
+    }
+</style>

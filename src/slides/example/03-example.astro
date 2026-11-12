@@ -1,0 +1,18 @@
+---
+import Overlay from "../../templates/Overlay.astro";
+import Content from "../../templates/Content.astro";
+import Row from "../../templates/Row.astro";
+import CodeBlock from "../../templates/CodeBlock.astro";
+
+export const sectionTitle = "Example Title";
+---
+<Overlay speaker="Finnbar" logo>
+    <Content>
+        <h2>{sectionTitle}</h2>
+        <Row>
+            <CodeBlock lang="ts" code={"console.log(\"Hello, world\")"} />
+            <CodeBlock lang="ts" code={"console.log(\"Hello, world\")"} />
+        </Row>
+        <p>This is an example paragraph within the content section.</p>
+    </Content>
+</Overlay>

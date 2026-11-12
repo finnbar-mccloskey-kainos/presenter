@@ -1,0 +1,16 @@
+---
+export type Props = Parameters<typeof Code>[0];
+
+import Code from "astro/components/Code.astro";
+---
+<div class="block">
+    <Code {...Astro.props}></Code>
+</div>
+
+<style>
+    .block {
+        background-color: #24292e;
+        padding: 1rem;
+        border-radius: 0.5rem;
+    }
+</style>
