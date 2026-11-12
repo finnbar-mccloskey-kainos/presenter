@@ -9,7 +9,7 @@ export interface Props {
 <div class="speaker-overlay">
     <slot />
     <div class="speaker-label small" style={`color: ${Astro.props.inverted ? "white" : "var(--color-kainos-blue)"}`}>{Astro.props.speaker}</div>
-    {Astro.props.logo && <img class="logo" src={Astro.props.inverted ? "/logo-alt.png" : "/logo.png"} alt="Logo" />}
+    {Astro.props.logo && <img class="logo" src={Astro.props.inverted ? "/presenter/logo-alt.png" : "/presenter/logo.png"} alt="Logo" />}
 </div>
 
 <style>
