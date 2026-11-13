@@ -1,0 +1,28 @@
+---
+import Overlay from "../../templates/Overlay.astro";
+import Content from "../../templates/Content.astro";
+import Grid from "../../templates/Grid.astro";
+import Card from "../../templates/Card.astro";
+
+export const sectionTitle = "Follow a request";
+---
+<Overlay speaker="Finnbar McCloskey" logo>
+    <Content>
+        <h2>Three layers, one request</h2>
+        <Grid columns={3}>
+            <Card color="var(--color-kainos-blue)">
+                <h3>Controller</h3>
+                <p>Receives HTTP input and shapes an HTTP response.</p>
+            </Card>
+            <Card color="var(--color-kainos-green)">
+                <h3>Service</h3>
+                <p>Applies business rules and coordinates the use case.</p>
+            </Card>
+            <Card color="var(--color-kainos-grey)">
+                <h3>Repository</h3>
+                <p>Loads and persists application data.</p>
+            </Card>
+        </Grid>
+        <p>Typical direction: HTTP → controller → service → repository → database</p>
+    </Content>
+</Overlay>

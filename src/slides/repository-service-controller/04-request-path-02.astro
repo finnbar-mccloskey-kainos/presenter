@@ -1,0 +1,18 @@
+---
+import Overlay from "../../templates/Overlay.astro";
+import Content from "../../templates/Content.astro";
+import Grid from "../../templates/Grid.astro";
+import NumberedBox from "../../templates/NumberedBox.astro";
+import Note from "../../templates/Note.astro";
+---
+<Overlay speaker="Finnbar McCloskey" logo>
+    <Content>
+        <h2>Keep the request moving inward</h2>
+        <Grid as="ol" columns={3}>
+            <NumberedBox number={1} title="Translate">Parse the route, validate the request shape, and call the use case.</NumberedBox>
+            <NumberedBox number={2} title="Decide">Check business rules and coordinate the work in the service.</NumberedBox>
+            <NumberedBox number={3} title="Persist">Use the repository to retrieve or change data, then return a result.</NumberedBox>
+        </Grid>
+        <Note>Each layer returns a result to the layer that called it; the controller alone speaks HTTP.</Note>
+    </Content>
+</Overlay>

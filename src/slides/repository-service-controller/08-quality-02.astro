@@ -1,0 +1,23 @@
+---
+import Overlay from "../../templates/Overlay.astro";
+import Content from "../../templates/Content.astro";
+import Grid from "../../templates/Grid.astro";
+import Card from "../../templates/Card.astro";
+import Note from "../../templates/Note.astro";
+---
+<Overlay speaker="Finnbar McCloskey" logo>
+    <Content>
+        <h2>Use the pattern where it earns its keep</h2>
+        <Grid columns={2}>
+            <Card color="var(--color-kainos-green)">
+                <h3>It helps when</h3>
+                <p>Use cases have meaningful rules, persistence needs isolation, or multiple entry points share behavior.</p>
+            </Card>
+            <Card color="var(--color-kainos-grey)">
+                <h3>Watch for</h3>
+                <p>Pass-through layers, leaky database models, and abstractions that add indirection without flexibility.</p>
+            </Card>
+        </Grid>
+        <Note>Start with the responsibility boundary. Add interfaces and extra layers only when they clarify a real change or test seam.</Note>
+    </Content>
+</Overlay>

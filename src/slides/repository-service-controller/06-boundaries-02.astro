@@ -1,0 +1,26 @@
+---
+import Overlay from "../../templates/Overlay.astro";
+import Content from "../../templates/Content.astro";
+import Row from "../../templates/Row.astro";
+import CodeBlock from "../../templates/CodeBlock.astro";
+import Note from "../../templates/Note.astro";
+---
+<Overlay speaker="Finnbar McCloskey" logo>
+    <Content>
+        <h2>Depend on useful contracts</h2>
+        <Row>
+            <CodeBlock lang="ts" code={`interface AccountRepository {
+  findById(id: string): Promise<Account | null>;
+}
+
+class GetAccountService {
+  constructor(private accounts: AccountRepository) {}
+
+  execute(id: string) {
+    return this.accounts.findById(id);
+  }
+}`} />
+        </Row>
+        <Note>The service depends on the operations it needs—not on SQL, an ORM, or a particular storage engine.</Note>
+    </Content>
+</Overlay>

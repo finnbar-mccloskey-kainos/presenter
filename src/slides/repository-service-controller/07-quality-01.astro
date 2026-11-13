@@ -1,0 +1,19 @@
+---
+import Overlay from "../../templates/Overlay.astro";
+import Content from "../../templates/Content.astro";
+import Grid from "../../templates/Grid.astro";
+import NumberedBox from "../../templates/NumberedBox.astro";
+
+export const sectionTitle = "Test the seams";
+---
+<Overlay speaker="Finnbar McCloskey" logo>
+    <Content>
+        <h2>Test each layer at the right level</h2>
+        <Grid as="ol" columns={3}>
+            <NumberedBox number={1} title="Service tests">Exercise business rules with a fake repository.</NumberedBox>
+            <NumberedBox number={2} title="Repository tests">Check query and persistence behavior against a real or test database.</NumberedBox>
+            <NumberedBox number={3} title="API tests">Verify routes, validation, status codes, and serialized responses.</NumberedBox>
+        </Grid>
+        <p>Fast focused tests explain failures; a smaller set of integration tests checks the wiring.</p>
+    </Content>
+</Overlay>
