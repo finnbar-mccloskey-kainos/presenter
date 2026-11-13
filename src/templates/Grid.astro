@@ -23,5 +23,5 @@ const {
 <style>
     .grid { display: grid; grid-template-columns: var(--grid-columns); gap: var(--grid-gap); }
     .grid:where(ol, ul) { margin: 0; padding: 0; list-style: none; }
-    @media (max-width: 800px) { .grid { grid-template-columns: var(--grid-mobile-columns); } }
+    @container slide (max-aspect-ratio: 20 / 27) { .grid { grid-template-columns: var(--grid-mobile-columns); } }
 </style>

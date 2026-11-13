@@ -54,6 +54,20 @@ export const sectionTitle = "Introduction";
 </Overlay>
 ```
 
+4. Optionally export a positive numeric `aspectRatio`, such as `export const aspectRatio = 4 / 3;`.
+   It applies to that slide and subsequent slides until another slide overrides it. The default is
+   `16 / 9`.
+
+Slides use a 1920 CSS pixel wide design canvas, with the height determined by the aspect ratio and
+`1rem` equal to 25 CSS pixels. Text and spacing therefore scale with the slide width, including on
+narrower slide ratios. The whole canvas scales uniformly to fit the screen without cropping;
+screens with a different ratio show black bars. Images remain limited by their source resolution.
+The `Grid` template's mobile breakpoint is based on the slide ratio, not the screen width.
+
+Printing uses a separate page size for each slide. Mixed page sizes require browser support for
+named CSS pages and may depend on print settings; browsers without that support fall back to 16:9
+pages.
+
 ## Templates
 
 | Template    | Purpose | Usage |

@@ -1,6 +1,7 @@
 export interface SlideModule {
     default: any;
     sectionTitle?: string;
+    aspectRatio?: number;
 }
 
 export interface Presentation {
