@@ -1,4 +1,7 @@
-This is a skill that is used to create presentations in an Astro-based slides-as-code project based on prompts.
+---
+name: create-presentation
+description: Used to create presentations in an Astro-based slides-as-code project based on prompts.
+---
 
 Throughout this skill, since Astro uses both {} and <> in syntax, I will use % for placeholders that you, the agent, are supposed to fill.
 
