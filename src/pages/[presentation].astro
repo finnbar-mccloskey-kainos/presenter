@@ -70,6 +70,7 @@ const numSlides = slideComponents.length;
         resizeBackground();
         slides.forEach((el, i) => {
             el.style.opacity = i === currentSlide ? '1' : '0';
+            el.toggleAttribute('inert', i !== currentSlide);
         });
 
         // URL uses 1-based slide numbers so permalinks read naturally.
@@ -77,6 +78,14 @@ const numSlides = slideComponents.length;
         url.searchParams.set('slide', String(currentSlide + 1));
         history.replaceState({ slide: currentSlide }, '', url);
     }
+
+    document.querySelectorAll('a[data-slide-number]').forEach((link) => {
+        link.addEventListener('click', (e) => {
+            if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+            e.preventDefault();
+            setSlide(Number(link.dataset.slideNumber) - 1);
+        });
+    });
 
     document.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowRight') {
