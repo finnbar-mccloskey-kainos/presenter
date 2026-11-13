@@ -60,7 +60,7 @@ import Title from "../../templates/Title.astro";
 2. Slides should not have large paragraphs of text.
 3. Use bullet points or short sentences to convey information clearly.
 4. No CSS or inline styles is allowed in slides. Do not generate any CSS at all.
-5. Styles for h1, h2, h3 and p are already implemented, so you can use those.
+5. Styles for h1, h2, h3, ul, ol and p are already implemented, so you can use those.
 6. Existing components for slides are in the `src/templates` directory. Do not create new components there.
 7. Do not create, delete or modify files outside of the slides directory
 8. Do not write any new code except for the config.ts file, which should contain only constants, and Astro slide files.
