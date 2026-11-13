@@ -7,8 +7,9 @@ A slide deck framework built with [Astro](https://astro.build). Slides are Astro
 - **Multiple presentations.** Each subfolder of `src/slides/` becomes its own presentation at `/<folder-name>`.
 - **Presentation picker.** The home page (`/`) lists every presentation with its slide count.
 - **Keyboard navigation.** Use the <kbd>→</kbd> and <kbd>←</kbd> arrow keys to move between slides. Navigation wraps around at either end.
-- **Slide permalinks.** The URL updates as you navigate (for example `/example?slide=3`), so you can share or reload a link to a specific slide. Slide numbers start at 1.
+- **Slide permalinks.** The URL updates as you navigate (for example `/example#slide-3`), so you can share or reload a link to a specific slide. Slide numbers start at 1.
 - **Automatic agenda.** The `Agenda` template links to slides that export a `sectionTitle` in the current presentation.
+- **JavaScript-free viewing.** With JavaScript disabled, slides appear in a scrollable list separated by small gaps, and agenda links and permalinks jump to their slides.
 - **Reusable templates.** The title, agenda, content, layout and code slide templates use the Kainos brand colours.
 
 ## Project structure

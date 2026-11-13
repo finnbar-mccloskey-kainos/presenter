@@ -12,7 +12,8 @@ export const getStaticPaths = (() =>
 
 const { presentation } = Astro.props as { presentation: Presentation };
 const slideComponents = presentation.slides.map((slide) => slide.default);
-const slideHeights = getSlideAspectRatios(presentation.slides).map((ratio) => SLIDE_WIDTH / ratio);
+const slideRatios = getSlideAspectRatios(presentation.slides);
+const slideHeights = slideRatios.map((ratio) => SLIDE_WIDTH / ratio);
 const printPages = slideHeights.map((height, i) =>
     `@page slide-${i} { size: ${SLIDE_WIDTH}px ${height}px; margin: 0; }`
 ).join("\n");
@@ -26,10 +27,49 @@ const numSlides = slideComponents.length;
     }
 </style>
 <style is:global is:inline set:html={printPages} />
+<noscript>
+    <style is:inline>
+        @media screen {
+            :root {
+                font-size: min(1.302083333vw, 25px);
+            }
+
+            .slides.slides {
+                width: 100%;
+                height: auto;
+                overflow: visible;
+            }
+
+            .slide-background {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+                width: min(100%, 1920px);
+                margin: 0 auto;
+            }
+
+            .slides .slide-background::before {
+                display: none;
+            }
+
+            .slides .slide-container {
+                position: relative;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: auto;
+                aspect-ratio: var(--slide-ratio);
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+        }
+    </style>
+</noscript>
 <div class="slides">
     <div class="slide-background">
     {slideComponents.map((Slide, i) => (
-        <div class="slide-container" id={`slide-${i}`} style={`--slide-height: ${slideHeights[i]}px; page: slide-${i};`}>
+        <div class="slide-container" id={`slide-${i + 1}`} style={`--slide-height: ${slideHeights[i]}px; --slide-ratio: ${slideRatios[i]}; page: slide-${i};`}>
             <Slide />
         </div>
     ))}
@@ -39,7 +79,7 @@ const numSlides = slideComponents.length;
 <script define:vars={{numSlides, slideHeights, SLIDE_WIDTH}}>
     
     function slideFromUrl() {
-        const slide = Number.parseInt(new URL(location.href).searchParams.get('slide') ?? '', 10);
+        const slide = Number(location.hash.match(/^#slide-(\d+)$/)?.[1]);
         return Number.isInteger(slide) && slide >= 1 && slide <= numSlides ? slide - 1 : 0;
     }
 
@@ -73,11 +113,11 @@ const numSlides = slideComponents.length;
             el.toggleAttribute('inert', i !== currentSlide);
         });
 
-        // URL uses 1-based slide numbers so permalinks read naturally.
-        const url = new URL(location.href);
-        url.searchParams.set('slide', String(currentSlide + 1));
-        history.replaceState({ slide: currentSlide }, '', url);
+        // Slide ids are 1-based so permalinks read naturally.
+        history.replaceState({ slide: currentSlide }, '', `#slide-${currentSlide + 1}`);
     }
+
+    window.addEventListener('hashchange', () => setSlide(slideFromUrl()));
 
     document.querySelectorAll('a[data-slide-number]').forEach((link) => {
         link.addEventListener('click', (e) => {
