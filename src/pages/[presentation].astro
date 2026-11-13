@@ -27,11 +27,13 @@ const numSlides = slideComponents.length;
 </style>
 <style is:global is:inline set:html={printPages} />
 <div class="slides">
+    <div class="slide-background">
     {slideComponents.map((Slide, i) => (
         <div class="slide-container" id={`slide-${i}`} style={`--slide-height: ${slideHeights[i]}px; page: slide-${i};`}>
             <Slide />
         </div>
     ))}
+    </div>
 </div>
 
 <script define:vars={{numSlides, slideHeights, SLIDE_WIDTH}}>
@@ -43,11 +45,21 @@ const numSlides = slideComponents.length;
 
     let currentSlide = slideFromUrl();
     const slides = document.querySelectorAll('.slide-container');
+    const background = document.querySelector('.slide-background');
+
+    function resizeBackground() {
+        background.style.setProperty('--background-height', `${slideHeights[currentSlide]}px`);
+        background.style.setProperty('--background-scale', String(
+            Math.min(window.innerWidth / SLIDE_WIDTH, window.innerHeight / slideHeights[currentSlide])
+        ));
+    }
+
     function resizeSlides() {
         slides.forEach((el, i) => {
             const scale = Math.min(window.innerWidth / SLIDE_WIDTH, window.innerHeight / slideHeights[i]);
             el.style.setProperty('--slide-scale', String(scale));
         });
+        resizeBackground();
     }
     resizeSlides();
     window.addEventListener('resize', resizeSlides);
@@ -55,6 +67,7 @@ const numSlides = slideComponents.length;
 
     function setSlide(index) {
         currentSlide = index;
+        resizeBackground();
         slides.forEach((el, i) => {
             el.style.opacity = i === currentSlide ? '1' : '0';
         });
@@ -78,6 +91,17 @@ const numSlides = slideComponents.length;
 </script>
 
 <style>
+    .slide-background::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 1920px;
+        height: var(--background-height);
+        background: white;
+        transform: translate(-50%, -50%) scale(var(--background-scale, 1));
+    }
+
     .slide-container {
         position: absolute;
         top: 50%;
@@ -110,6 +134,10 @@ const numSlides = slideComponents.length;
         .slides {
             width: auto;
             height: auto;
+        }
+
+        .slide-background::before {
+            display: none;
         }
 
         .slide-container {
