@@ -63,7 +63,7 @@ import Title from "../../templates/Title.astro";
 2. Slides should not have large paragraphs of text.
 3. Use bullet points or short sentences to convey information clearly.
 4. No CSS or inline styles is allowed in slides. Do not generate any CSS at all.
-5. Styles for h1, h2, h3, ul, ol and p are already implemented, so you can use those.
+5. Styles for h1, h2, h3, ul, ol, div and p are already implemented, so you can use those.
 6. Existing components for slides are in the `src/templates` directory. Do not create new components there.
 7. Do not create, delete or modify files outside of the slides directory
 8. Do not write any new code except for the config.ts file, which should contain only constants, and Astro slide files.
@@ -104,3 +104,17 @@ export interface Props {
 	--color-kainos-bright-blue: #009fe3;
 }
 ```
+13. Try to include images when relevant to the content of the slide. Use the `img-fill` class to ensure images scale correctly within their containers. Ensure that images are wrapped in a `div` when used inside a `Row` component. You are allowed to include copyrighted images for fair use purposes.
+For example:
+```astro
+<Row>
+    <div>
+        <img class="img-fill" src="/presenter/example-image.webp" alt="Example image">
+    </div>
+    <div>
+        <h1>Example Image</h1>
+        <p>Caption or description for the image.</p>
+    </div>
+</Row>
+```
+14. Put images in around 30% of slides and use visual elements like diagrams or icons in 30% of slides to make them more engaging and easier to understand.

@@ -1,6 +1,12 @@
+---
+export interface Props {
+    logo?: true;
+}
+---
+
 <div class="background">
     <div class="content">
-        <img class="logo" src="/presenter/logo-alt.png" alt="Kainos Logo">
+        {Astro.props.logo && <img class="logo" src="/presenter/logo-alt.png" alt="Kainos Logo">}
         <h1><slot /></h1>
         <h3><slot name="subtitle" /></h3>
     </div>
@@ -16,6 +22,10 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+    }
+
+    .content {
+        max-width: 80%;
     }
 
     .logo {
