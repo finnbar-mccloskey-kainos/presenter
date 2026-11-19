@@ -9,10 +9,27 @@ import { speakerNames } from "./config";
 <Overlay speaker={speakerNames[0]} logo>
     <Content>
         <h2>Three problems to solve</h2>
-        <Row>
-            <div><Card color="var(--color-kainos-orange)"><h3>Developer toil</h3><p>Automate repetitive infrastructure and deployment work.</p></Card></div>
-            <div><Card color="var(--color-kainos-bright-blue)"><h3>Inconsistent practices</h3><p>Provide shared, repeatable approaches.</p></Card></div>
-            <div><Card color="var(--color-kainos-green)"><h3>Security &amp; compliance</h3><p>Build checks into standard workflows.</p></Card></div>
+        <Row alignment="stretch">
+            <div>
+                <Card color="var(--color-kainos-orange)">
+                    <h3>Developer toil</h3>
+                    <p>
+                        Automate repetitive infrastructure and deployment work.
+                    </p>
+                </Card>
+            </div>
+            <div>
+                <Card color="var(--color-kainos-bright-blue)">
+                    <h3>Inconsistent practices</h3>
+                    <p>Provide shared, repeatable approaches.</p>
+                </Card>
+            </div>
+            <div>
+                <Card color="var(--color-kainos-green)">
+                    <h3>Security &amp; compliance</h3>
+                    <p>Build checks into standard workflows.</p>
+                </Card>
+            </div>
         </Row>
     </Content>
 </Overlay>
