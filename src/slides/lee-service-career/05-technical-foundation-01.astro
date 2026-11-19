@@ -1,0 +1,32 @@
+---
+import Overlay from "../../templates/Overlay.astro";
+import Content from "../../templates/Content.astro";
+import Row from "../../templates/Row.astro";
+import Card from "../../templates/Card.astro";
+import studyNotes from "./images/study-notes.jpg";
+
+export const sectionTitle = "Building a technical foundation";
+---
+<Overlay speaker="Lee Service" logo>
+    <Content>
+        <h2>A deliberate move into software</h2>
+        <Row>
+            <div>
+                <img class="img-fill" src={studyNotes.src} alt="Illustrative close-up of a pen and handwritten study notes; not Lee Service." />
+            </div>
+            <div>
+                <Card color="var(--color-kainos-grey)">
+                    <h3>Earlier study</h3>
+                    <p>BA, English Language and Literature</p>
+                    <p>Ulster University · 2:1</p>
+                </Card>
+                <Card color="var(--color-kainos-blue)">
+                    <h3>Technical study</h3>
+                    <p>MSc, Software Development</p>
+                    <p>Queen's University Belfast · 2020–2021 · Distinction</p>
+                </Card>
+            </div>
+        </Row>
+        <p>The profile's education history shows a humanities degree followed by postgraduate software development study.</p>
+    </Content>
+</Overlay>

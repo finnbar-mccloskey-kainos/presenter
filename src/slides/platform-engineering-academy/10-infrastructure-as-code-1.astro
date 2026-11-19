@@ -1,0 +1,24 @@
+---
+import Content from "../../templates/Content.astro";
+import Overlay from "../../templates/Overlay.astro";
+import Row from "../../templates/Row.astro";
+import { speakerNames } from "./config";
+
+export const sectionTitle = "Infrastructure as code and delivery";
+---
+
+<Overlay speaker={speakerNames[2]} logo>
+    <Content>
+        <Row>
+            <div>
+                <h2>Why infrastructure as code?</h2>
+                <ul>
+                    <li>Manual changes can introduce mistakes and configuration drift.</li>
+                    <li>Code makes infrastructure repeatable, reviewable and versioned.</li>
+                    <li>Terraform and CDK are examples of infrastructure-as-code tools.</li>
+                </ul>
+            </div>
+            <div><img class="img-fill" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/terraform/terraform-original.svg" alt="Terraform logo" /></div>
+        </Row>
+    </Content>
+</Overlay>

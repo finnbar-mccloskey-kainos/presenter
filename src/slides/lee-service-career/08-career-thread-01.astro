@@ -1,0 +1,28 @@
+---
+import Overlay from "../../templates/Overlay.astro";
+import Content from "../../templates/Content.astro";
+import Grid from "../../templates/Grid.astro";
+import Card from "../../templates/Card.astro";
+
+export const sectionTitle = "Connecting the chapters";
+---
+<Overlay speaker="Lee Service" logo>
+    <Content>
+        <h2>One career, three kinds of learning</h2>
+        <Grid as="ol" columns={3}>
+            <Card color="var(--color-kainos-orange)">
+                <h3>Customer insight</h3>
+                <p>Listen to clients and understand user experience.</p>
+            </Card>
+            <Card color="var(--color-kainos-blue)">
+                <h3>Technical foundation</h3>
+                <p>Build software skills through postgraduate study.</p>
+            </Card>
+            <Card color="var(--color-kainos-green)">
+                <h3>Engineering practice</h3>
+                <p>Apply those skills in software development roles.</p>
+            </Card>
+        </Grid>
+        <p>Takeaway: a career change can build on what came before, rather than erase it.</p>
+    </Content>
+</Overlay>

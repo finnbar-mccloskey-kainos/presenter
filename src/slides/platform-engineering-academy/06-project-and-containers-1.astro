@@ -1,0 +1,21 @@
+---
+import Content from "../../templates/Content.astro";
+import Overlay from "../../templates/Overlay.astro";
+import Row from "../../templates/Row.astro";
+import Card from "../../templates/Card.astro";
+import { speakerNames } from "./config";
+
+export const sectionTitle = "Our project and containers";
+---
+
+<Overlay speaker={speakerNames[1]} logo>
+    <Content>
+        <h2>From development week to platform</h2>
+        <Row>
+            <div><Card color="var(--color-kainos-blue)"><h3>1. E-commerce site</h3><p>Build on our existing application.</p></Card></div>
+            <div><Card color="var(--color-kainos-bright-blue)"><h3>2. Containerise</h3><p>Package the application as images.</p></Card></div>
+            <div><Card color="var(--color-kainos-green)"><h3>3. Automate</h3><p>Move towards repeatable cloud infrastructure.</p></Card></div>
+        </Row>
+        <p>We followed the academy guides individually; one person raised pull requests to avoid conflicting changes.</p>
+    </Content>
+</Overlay>

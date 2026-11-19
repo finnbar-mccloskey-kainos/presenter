@@ -1,0 +1,25 @@
+---
+import Content from "../../templates/Content.astro";
+import Overlay from "../../templates/Overlay.astro";
+import Row from "../../templates/Row.astro";
+import { speakerNames } from "./config";
+
+export const sectionTitle = "Demo, lessons and next steps";
+---
+
+<Overlay speaker={speakerNames[3]} logo>
+    <Content>
+        <Row>
+            <div>
+                <h2>Live demo: GitHub Actions</h2>
+                <ol>
+                    <li>Open the repository's Actions tab.</li>
+                    <li>Walk through a workflow and its trigger.</li>
+                    <li>Open a run and inspect its jobs and logs.</li>
+                    <li>Discuss how the result supports delivery.</li>
+                </ol>
+            </div>
+            <div><img class="img-fill" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub logo" /></div>
+        </Row>
+    </Content>
+</Overlay>

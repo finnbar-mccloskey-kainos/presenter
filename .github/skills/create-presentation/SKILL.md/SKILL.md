@@ -104,7 +104,7 @@ export interface Props {
 	--color-kainos-bright-blue: #009fe3;
 }
 ```
-13. Try to include images when relevant to the content of the slide. Use the `img-fill` class to ensure images scale correctly within their containers. Ensure that images are wrapped in a `div` when used inside a `Row` component. You are allowed to include copyrighted images for fair use purposes.
+13. Try to include images when relevant to the content of the slide. Use the `img-fill` class to ensure images scale correctly within their containers. Ensure that images are wrapped in a `div` when used inside a `Row` component. You are allowed to include copyrighted images for fair use purposes. You are also allowed to, and are encouraged to use image URLs without downloading them.
 For example:
 ```astro
 <Row>
@@ -118,3 +118,4 @@ For example:
 </Row>
 ```
 14. Put images in around 30% of slides and use visual elements like diagrams or icons in 30% of slides to make them more engaging and easier to understand.
+15. Make sure that you actually include images as said in point 14, on AT LEAST 30% of slides.

@@ -1,0 +1,32 @@
+---
+import Content from "../../templates/Content.astro";
+import Overlay from "../../templates/Overlay.astro";
+import Row from "../../templates/Row.astro";
+import CodeBlock from "../../templates/CodeBlock.astro";
+import { speakerNames } from "./config";
+---
+
+<Overlay speaker={speakerNames[2]} logo>
+    <Content>
+        <h2>Organising Terraform</h2>
+        <Row>
+            <div>
+                <CodeBlock lang="text" code={`my-infrastructure/
+├── main.tf
+├── variables.tf
+├── outputs.tf
+├── providers.tf
+├── env.tfvars
+└── modules/
+    └── networking/`} />
+            </div>
+            <div>
+                <ul>
+                    <li>Resources, inputs and outputs have clear homes.</li>
+                    <li>Modules make common infrastructure reusable.</li>
+                    <li>Environment values can be supplied separately.</li>
+                </ul>
+            </div>
+        </Row>
+    </Content>
+</Overlay>

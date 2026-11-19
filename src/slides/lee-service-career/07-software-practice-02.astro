@@ -1,0 +1,30 @@
+---
+import Overlay from "../../templates/Overlay.astro";
+import Content from "../../templates/Content.astro";
+import Row from "../../templates/Row.astro";
+import Card from "../../templates/Card.astro";
+import softwareWork from "./images/software-work.jpg";
+---
+<Overlay speaker="Lee Service" logo>
+    <Content>
+        <h2>Continuing the engineering chapter</h2>
+        <Row>
+            <div>
+                <img class="img-fill" src={softwareWork.src} alt="Illustrative close-up of a computer screen displaying code; not Lee Service." />
+            </div>
+            <div>
+                <Card color="var(--color-kainos-blue)">
+                    <h3>Kainos</h3>
+                    <p>Engineering role listed from Jun 2023 to present</p>
+                    <p>Belfast, Northern Ireland</p>
+                </Card>
+                <Card color="var(--color-kainos-green)">
+                    <h3>Keep learning</h3>
+                    <p>AWS Certified Cloud Practitioner, issued Sep 2023.</p>
+                    <p>The profile lists the certification as expiring Sep 2026.</p>
+                </Card>
+            </div>
+        </Row>
+        <p>LinkedIn's experience section lists “Software Engineer”; its headline describes “Associate Software Developer.”</p>
+    </Content>
+</Overlay>

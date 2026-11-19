@@ -1,0 +1,23 @@
+---
+import Content from "../../templates/Content.astro";
+import Overlay from "../../templates/Overlay.astro";
+import Row from "../../templates/Row.astro";
+import { speakerNames } from "./config";
+---
+
+<Overlay speaker={speakerNames[1]} logo>
+    <Content>
+        <Row>
+            <div>
+                <h2>Why containers?</h2>
+                <p>A container packages an application with its runtime and dependencies.</p>
+                <ul>
+                    <li>Consistent across environments</li>
+                    <li>Portable and quick to start</li>
+                    <li>Efficient use of resources</li>
+                </ul>
+            </div>
+            <div><img class="img-fill" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" alt="Docker container logo" /></div>
+        </Row>
+    </Content>
+</Overlay>

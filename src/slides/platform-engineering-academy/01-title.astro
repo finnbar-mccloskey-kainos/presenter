@@ -1,0 +1,9 @@
+---
+import Title from "../../templates/Title.astro";
+import { speakerNames } from "./config";
+---
+
+<Title logo>
+    Platform Engineering Academy
+    <span slot="subtitle">{speakerNames.join(" · ")}</span>
+</Title>

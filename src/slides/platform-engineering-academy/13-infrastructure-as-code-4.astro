@@ -1,0 +1,22 @@
+---
+import Content from "../../templates/Content.astro";
+import Overlay from "../../templates/Overlay.astro";
+import Row from "../../templates/Row.astro";
+import { speakerNames } from "./config";
+---
+
+<Overlay speaker={speakerNames[2]} logo>
+    <Content>
+        <Row>
+            <div>
+                <h2>CI/CD with GitHub Actions</h2>
+                <ul>
+                    <li>Workflows automate repeatable steps when changes are made.</li>
+                    <li>Typical steps include tests, image builds and deployment.</li>
+                    <li>Automated checks support safer, more consistent releases.</li>
+                </ul>
+            </div>
+            <div><img class="img-fill" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/githubactions/githubactions-original.svg" alt="GitHub Actions logo" /></div>
+        </Row>
+    </Content>
+</Overlay>

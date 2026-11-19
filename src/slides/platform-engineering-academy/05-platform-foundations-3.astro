@@ -1,0 +1,18 @@
+---
+import Content from "../../templates/Content.astro";
+import Overlay from "../../templates/Overlay.astro";
+import { speakerNames } from "./config";
+---
+
+<Overlay speaker={speakerNames[0]} logo>
+    <Content>
+        <h2>Why it matters to the business</h2>
+        <ul>
+            <li>Reliable, repeatable delivery supports service stability and uptime.</li>
+            <li>Automation helps teams deliver working software sooner.</li>
+            <li>Cloud platforms support scale, global reach and agility.</li>
+            <li>Standardisation can improve cost visibility and efficiency.</li>
+        </ul>
+        <p>Common cloud providers include Azure, AWS and Google Cloud.</p>
+    </Content>
+</Overlay>
