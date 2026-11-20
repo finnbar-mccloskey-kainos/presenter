@@ -2,16 +2,23 @@
 import Content from "../../templates/Content.astro";
 import Overlay from "../../templates/Overlay.astro";
 import { speakerNames } from "./config";
+
+export const sectionTitle = "Next steps";
 ---
 
 <Overlay speaker={speakerNames[3]} logo>
     <Content>
         <h2>What's next?</h2>
         <ul>
-            <li>Host the e-commerce website publicly with Azure Container Apps.</li>
+            <li>
+                Host the e-commerce website publicly with Azure Container Apps.
+            </li>
             <li>Continue replacing manual setup with Terraform.</li>
             <li>Build on automated checks and deployment workflows.</li>
         </ul>
-        <p><strong>Takeaway:</strong> reusable foundations help teams deliver reliably and with less toil.</p>
+        <p>
+            <strong>Takeaway:</strong> reusable foundations help teams deliver
+            reliably and with less toil.
+        </p>
     </Content>
 </Overlay>
