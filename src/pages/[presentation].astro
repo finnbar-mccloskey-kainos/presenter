@@ -1,6 +1,7 @@
 ---
 import type { GetStaticPaths } from "astro";
 import Layout from "../layouts/Layout.astro";
+import SlideContext from "../templates/SlideContext.astro";
 import { getSlideAspectRatios, SLIDE_WIDTH } from "../lib/aspect-ratios";
 import { getPresentations, type Presentation } from "../lib/presentations";
 
@@ -14,195 +15,282 @@ const { presentation } = Astro.props as { presentation: Presentation };
 const slideComponents = presentation.slides.map((slide) => slide.default);
 const slideRatios = getSlideAspectRatios(presentation.slides);
 const slideHeights = slideRatios.map((ratio) => SLIDE_WIDTH / ratio);
-const printPages = slideHeights.map((height, i) =>
-    `@page slide-${i} { size: ${SLIDE_WIDTH}px ${height}px; margin: 0; }`
-).join("\n");
+const printPages = slideHeights
+    .map(
+        (height, i) =>
+            `@page slide-${i} { size: ${SLIDE_WIDTH}px ${height}px; margin: 0; }`,
+    )
+    .join("\n");
 const numSlides = slideComponents.length;
 ---
 
 <Layout title={presentation.title}>
-<style is:global>
-    :root {
-        font-size: 25px;
-    }
-</style>
-<style is:global is:inline set:html={printPages} />
-<noscript>
-    <style is:inline>
-        @media screen {
-            :root {
-                font-size: min(1.302083333vw, 25px);
-            }
-
-            .slides.slides {
-                width: 100%;
-                height: auto;
-                overflow: visible;
-            }
-
-            .slide-background {
-                display: flex;
-                flex-direction: column;
-                gap: 0.5rem;
-                width: min(100%, 1920px);
-                margin: 0 auto;
-            }
-
-            .slides .slide-background::before {
-                display: none;
-            }
-
-            .slides .slide-container {
-                position: relative;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: auto;
-                aspect-ratio: var(--slide-ratio);
-                opacity: 1;
-                transform: none;
-                transition: none;
-            }
+    <style is:global>
+        :root {
+            font-size: 25px;
         }
     </style>
-</noscript>
-<div class="slides">
-    <div class="slide-background">
-    {slideComponents.map((Slide, i) => (
-        <div class="slide-container" id={`slide-${i + 1}`} style={`--slide-height: ${slideHeights[i]}px; --slide-ratio: ${slideRatios[i]}; page: slide-${i};`}>
-            <Slide />
+    <style is:global is:inline set:html={printPages} />
+    <noscript>
+        <style is:inline>
+            @media screen {
+                :root {
+                    font-size: min(1.302083333vw, 25px);
+                }
+
+                .slides.slides {
+                    width: 100%;
+                    height: auto;
+                    overflow: visible;
+                }
+
+                .slide-background {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.5rem;
+                    width: min(100%, 1920px);
+                    margin: 0 auto;
+                }
+
+                .slides .slide-background::before {
+                    display: none;
+                }
+
+                .slides .slide-container {
+                    position: relative;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: auto;
+                    aspect-ratio: var(--slide-ratio);
+                    opacity: 1;
+                    transform: none;
+                    transition: none;
+                }
+
+                /* .animation.reveal {
+                    opacity: 1;
+                    transition: none;
+                } */
+            }
+        </style>
+    </noscript>
+    <div class="slides">
+        <div class="slide-background">
+            {slideComponents.map((Slide, i) => {
+                return (
+                    <div
+                        class="slide-container"
+                        id={`slide-${i + 1}`}
+                        style={`--slide-height: ${slideHeights[i]}px; --slide-ratio: ${slideRatios[i]}; page: slide-${i};`}
+                    >
+                        <SlideContext index={i} SlideComponent={Slide} />
+                    </div>
+                );
+            })}
         </div>
-    ))}
     </div>
-</div>
 
-<script define:vars={{numSlides, slideHeights, SLIDE_WIDTH}}>
-    
-    function slideFromUrl() {
-        const slide = Number(location.hash.match(/^#slide-(\d+)$/)?.[1]);
-        return Number.isInteger(slide) && slide >= 1 && slide <= numSlides ? slide - 1 : 0;
-    }
-
-    let currentSlide = slideFromUrl();
-    const slides = document.querySelectorAll('.slide-container');
-    const background = document.querySelector('.slide-background');
-
-    function resizeBackground() {
-        background.style.setProperty('--background-height', `${slideHeights[currentSlide]}px`);
-        background.style.setProperty('--background-scale', String(
-            Math.min(window.innerWidth / SLIDE_WIDTH, window.innerHeight / slideHeights[currentSlide])
-        ));
-    }
-
-    function resizeSlides() {
-        slides.forEach((el, i) => {
-            const scale = Math.min(window.innerWidth / SLIDE_WIDTH, window.innerHeight / slideHeights[i]);
-            el.style.setProperty('--slide-scale', String(scale));
-        });
-        resizeBackground();
-    }
-    resizeSlides();
-    window.addEventListener('resize', resizeSlides);
-    setSlide(currentSlide);
-
-    function setSlide(index) {
-        currentSlide = index;
-        resizeBackground();
-        slides.forEach((el, i) => {
-            el.style.opacity = i === currentSlide ? '1' : '0';
-            el.toggleAttribute('inert', i !== currentSlide);
-        });
-
-        // Slide ids are 1-based so permalinks read naturally.
-        history.replaceState({ slide: currentSlide }, '', `#slide-${currentSlide + 1}`);
-    }
-
-    window.addEventListener('hashchange', () => setSlide(slideFromUrl()));
-
-    document.querySelectorAll('a[data-slide-number]').forEach((link) => {
-        link.addEventListener('click', (e) => {
-            if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-            e.preventDefault();
-            setSlide(Number(link.dataset.slideNumber) - 1);
-        });
-    });
-
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight') {
-            if (currentSlide >= numSlides - 1) return;
-            setSlide((currentSlide + 1) % numSlides);
-        } else if (e.key === 'ArrowLeft') {
-            if (currentSlide <= 0) return;
-            setSlide((currentSlide - 1 + numSlides) % numSlides);
-        }
-    });
-
-</script>
-
-<style>
-    .slide-background::before {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 1920px;
-        height: var(--background-height);
-        background: white;
-        transform: translate(-50%, -50%) scale(var(--background-scale, 1));
-    }
-
-    .slide-container {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 1920px;
-        height: var(--slide-height);
-        container: slide / size;
-        overflow: hidden;
-        background: white;
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(var(--slide-scale, 1));
-        transition: opacity 0.5s;
-    }
-
-    .slides {
-        position: relative;
-        width: 100vw;
-        height: 100vh;
-        margin: 0;
-        overflow: hidden;
-        background: black;
-    }
-
-    @media print {
-        @page {
-            size: 1920px 1080px;
-            margin: 0;
+    <script define:vars={{ numSlides, slideHeights, SLIDE_WIDTH }}>
+        function slideFromUrl() {
+            const slide = Number(location.hash.match(/^#slide-(\d+)$/)?.[1]);
+            return Number.isInteger(slide) && slide >= 1 && slide <= numSlides
+                ? slide - 1
+                : 0;
         }
 
-        .slides {
-            width: auto;
-            height: auto;
+        let currentSlide = slideFromUrl();
+        const slides = document.querySelectorAll(".slide-container");
+        const background = document.querySelector(".slide-background");
+
+        function resizeBackground() {
+            background.style.setProperty(
+                "--background-height",
+                `${slideHeights[currentSlide]}px`,
+            );
+            background.style.setProperty(
+                "--background-scale",
+                String(
+                    Math.min(
+                        window.innerWidth / SLIDE_WIDTH,
+                        window.innerHeight / slideHeights[currentSlide],
+                    ),
+                ),
+            );
         }
 
+        function resizeSlides() {
+            slides.forEach((el, i) => {
+                const scale = Math.min(
+                    window.innerWidth / SLIDE_WIDTH,
+                    window.innerHeight / slideHeights[i],
+                );
+                el.style.setProperty("--slide-scale", String(scale));
+            });
+            resizeBackground();
+        }
+        resizeSlides();
+        window.addEventListener("resize", resizeSlides);
+        setSlide(currentSlide);
+
+        function setSlide(index) {
+            currentSlide = index;
+            resizeBackground();
+            slides.forEach((el, i) => {
+                el.style.opacity = i === currentSlide ? "1" : "0";
+                el.toggleAttribute("inert", i !== currentSlide);
+            });
+
+            // Slide ids are 1-based so permalinks read naturally.
+            history.replaceState(
+                { slide: currentSlide },
+                "",
+                `#slide-${currentSlide + 1}`,
+            );
+        }
+
+        function revealNextAnimation() {
+            const hiddenAnimations = Array.from(
+                slides[currentSlide].querySelectorAll(".animation:not(.show)"),
+            );
+            if (hiddenAnimations.length === 0) return false;
+
+            const lowestIndex = hiddenAnimations.reduce(
+                (lowest, animation) =>
+                    Math.min(
+                        lowest,
+                        Number(animation.dataset.animation ?? Infinity),
+                    ),
+                Infinity,
+            );
+            const matchingAnimations = slides[currentSlide].querySelectorAll(
+                `.animation:not(.show)[data-animation="${lowestIndex}"]`,
+            );
+
+            matchingAnimations.forEach((animation) =>
+                animation.classList.add("show"),
+            );
+            return matchingAnimations.length > 0;
+        }
+
+        function hidePreviousAnimation() {
+            const shownAnimations = Array.from(
+                slides[currentSlide].querySelectorAll(".animation.show"),
+            );
+            if (shownAnimations.length === 0) return false;
+
+            const highestIndex = shownAnimations.reduce(
+                (highest, animation) =>
+                    Math.max(
+                        highest,
+                        Number(animation.dataset.animation ?? -1),
+                    ),
+                -1,
+            );
+            const matchingAnimations = slides[currentSlide].querySelectorAll(
+                `.animation.show[data-animation="${highestIndex}"]`,
+            );
+
+            matchingAnimations.forEach((animation) =>
+                animation.classList.remove("show"),
+            );
+            return matchingAnimations.length > 0;
+        }
+
+        window.addEventListener("hashchange", () => setSlide(slideFromUrl()));
+
+        document.querySelectorAll("a[data-slide-number]").forEach((link) => {
+            link.addEventListener("click", (e) => {
+                if (
+                    e.defaultPrevented ||
+                    e.button !== 0 ||
+                    e.metaKey ||
+                    e.ctrlKey ||
+                    e.shiftKey ||
+                    e.altKey
+                )
+                    return;
+                e.preventDefault();
+                setSlide(Number(link.dataset.slideNumber) - 1);
+            });
+        });
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "ArrowRight") {
+                if (revealNextAnimation()) return;
+                if (currentSlide >= numSlides - 1) return;
+                setSlide((currentSlide + 1) % numSlides);
+            } else if (e.key === "ArrowLeft") {
+                if (hidePreviousAnimation()) return;
+                if (currentSlide <= 0) return;
+                setSlide((currentSlide - 1 + numSlides) % numSlides);
+            }
+        });
+    </script>
+
+    <style>
         .slide-background::before {
-            display: none;
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 1920px;
+            height: var(--background-height);
+            background: white;
+            transform: translate(-50%, -50%) scale(var(--background-scale, 1));
         }
 
         .slide-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 1920px;
+            height: var(--slide-height);
+            container: slide / size;
+            overflow: hidden;
+            background: white;
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(var(--slide-scale, 1));
+            transition: opacity 0.5s;
+        }
+
+        .slides {
             position: relative;
-            top: 0;
-            left: 0;
-            opacity: 1 !important;
-            transform: none;
-            transition: none;
-            break-after: page;
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            background: black;
         }
 
-        .slide-container:last-child {
-            break-after: auto;
-        }
-    }
-</style>
+        @media print {
+            @page {
+                size: 1920px 1080px;
+                margin: 0;
+            }
 
+            .slides {
+                width: auto;
+                height: auto;
+            }
+
+            .slide-background::before {
+                display: none;
+            }
+
+            .slide-container {
+                position: relative;
+                top: 0;
+                left: 0;
+                opacity: 1 !important;
+                transform: none;
+                transition: none;
+                break-after: page;
+            }
+
+            .slide-container:last-child {
+                break-after: auto;
+            }
+        }
+    </style>
 </Layout>

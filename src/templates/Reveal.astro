@@ -1,0 +1,45 @@
+---
+import { getAnimationIndex } from "../lib/context";
+
+interface Props {
+    group?: string;
+}
+
+const { group } = Astro.props;
+const animationIndex = getAnimationIndex(group);
+---
+
+<div
+    class="animation reveal thiscanbefixed thiscanbefixed2"
+    data-animation={animationIndex}
+>
+    <slot />
+    <noscript>
+        <style is:inline>
+            @media screen {
+                .reveal.thiscanbefixed.thiscanbefixed2 {
+                    /* needs to be more specific than astro auto scoping css */
+                    opacity: 1;
+                }
+            }
+        </style>
+    </noscript>
+</div>
+
+<style>
+    .reveal {
+        opacity: 0;
+        transition: opacity 0.5s;
+    }
+
+    .reveal.show {
+        opacity: 1;
+    }
+
+    @media print {
+        .reveal {
+            opacity: 1;
+            transition: none;
+        }
+    }
+</style>

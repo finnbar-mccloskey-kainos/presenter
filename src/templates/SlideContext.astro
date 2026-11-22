@@ -1,0 +1,14 @@
+---
+import type { AstroComponentFactory } from "astro/runtime/server/index.js";
+import { setCurrentSlide } from "../lib/context";
+
+interface Props {
+    index: number;
+    SlideComponent: AstroComponentFactory;
+}
+
+const { index, SlideComponent } = Astro.props;
+setCurrentSlide(index);
+---
+
+<SlideComponent />

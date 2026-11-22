@@ -108,9 +108,7 @@ export interface Props {
 For example:
 ```astro
 <Row>
-    <div>
-        <img class="img-fill" src="/presenter/example-image.webp" alt="Example image">
-    </div>
+    <img class="img-fill" src="/presenter/example-image.webp" alt="Example image">
     <div>
         <h1>Example Image</h1>
         <p>Caption or description for the image.</p>
