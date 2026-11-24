@@ -102,6 +102,8 @@ const numSlides = slideComponents.length;
         let currentSlide = slideFromUrl();
         const slides = document.querySelectorAll(".slide-container");
         const background = document.querySelector(".slide-background");
+        let autoAnimationRun = 0;
+        let autoAnimationsRunning = false;
 
         function resizeBackground() {
             background.style.setProperty(
@@ -134,7 +136,10 @@ const numSlides = slideComponents.length;
         setSlide(currentSlide);
 
         function setSlide(index) {
+            const previousSlide = currentSlide;
             currentSlide = index;
+            autoAnimationsRunning = false;
+            const animationRun = ++autoAnimationRun;
             resizeBackground();
             slides.forEach((el, i) => {
                 el.style.opacity = i === currentSlide ? "1" : "0";
@@ -147,6 +152,60 @@ const numSlides = slideComponents.length;
                 "",
                 `#slide-${currentSlide + 1}`,
             );
+            if (previousSlide !== currentSlide) {
+                slides[previousSlide]
+                    .querySelectorAll(
+                        '.animation[data-animation-auto="true"].show',
+                    )
+                    .forEach((animation) =>
+                        animation.classList.remove("show"),
+                    );
+            }
+            runAutoAnimations(animationRun);
+        }
+
+        function runAutoAnimations(animationRun) {
+            const animations = Array.from(
+                slides[currentSlide].querySelectorAll(
+                    '.animation[data-animation-auto="true"]:not(.show)',
+                ),
+            ).map((animation) => {
+                const duration =
+                    animation.dataset.animationDuration ?? "0s";
+                const match = duration.match(/^(\d*\.?\d+)(ms|s)$/);
+                if (!match) {
+                    throw new Error(`Invalid animation duration: "${duration}".`);
+                }
+
+                return {
+                    animation,
+                    duration:
+                        Number(match[1]) * (match[2] === "s" ? 1000 : 1),
+                };
+            });
+            if (animations.length === 0) return;
+
+            autoAnimationsRunning = true;
+            function revealNextAutoAnimation(index) {
+                if (animationRun !== autoAnimationRun) return;
+
+                const { animation, duration } = animations[index];
+                animation.classList.add("show");
+                window.setTimeout(() => {
+                    if (animationRun !== autoAnimationRun) return;
+                    if (index + 1 < animations.length) {
+                        revealNextAutoAnimation(index + 1);
+                    } else {
+                        autoAnimationsRunning = false;
+                    }
+                }, duration);
+            }
+
+            window.requestAnimationFrame(() => {
+                window.requestAnimationFrame(() =>
+                    revealNextAutoAnimation(0),
+                );
+            });
         }
 
         function revealNextAnimation() {
@@ -175,7 +234,9 @@ const numSlides = slideComponents.length;
 
         function hidePreviousAnimation() {
             const shownAnimations = Array.from(
-                slides[currentSlide].querySelectorAll(".animation.show"),
+                slides[currentSlide].querySelectorAll(
+                    ".animation.show:not([data-animation-auto='true'])",
+                ),
             );
             if (shownAnimations.length === 0) return false;
 
@@ -188,7 +249,7 @@ const numSlides = slideComponents.length;
                 -1,
             );
             const matchingAnimations = slides[currentSlide].querySelectorAll(
-                `.animation.show[data-animation="${highestIndex}"]`,
+                `.animation.show:not([data-animation-auto='true'])[data-animation="${highestIndex}"]`,
             );
 
             matchingAnimations.forEach((animation) =>
@@ -216,6 +277,8 @@ const numSlides = slideComponents.length;
         });
 
         document.addEventListener("keydown", (e) => {
+            if (autoAnimationsRunning && e.key === "ArrowRight") return;
+
             if (e.key === "ArrowRight") {
                 if (revealNextAnimation()) return;
                 if (currentSlide >= numSlides - 1) return;

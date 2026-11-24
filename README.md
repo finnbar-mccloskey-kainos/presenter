@@ -79,6 +79,20 @@ pages.
 | `Content`   | White, centred content area. | Default slot. |
 | `Row`       | Lays out its children horizontally and wraps them when space runs out. | Default slot. |
 | `CodeBlock` | Code block with syntax highlighting (wraps Astro's `<Code />`). | Accepts the same props as `<Code />`, such as `code` and `lang`. |
+| `Reveal`    | Reveals its children during keyboard navigation. | Default slot; optional `group` and `order` props. |
+
+`Reveal` elements normally appear in their render order. Give them the same `group`
+to reveal them together. To set the sequence explicitly, give **every** `Reveal` on
+the slide a non-negative integer `order`: lower numbers appear first and equal
+numbers appear together. Reveals in the same group must have the same order.
+The left arrow hides steps in reverse order. All reveals remain visible when printing
+or viewing without JavaScript.
+
+```astro
+<Reveal order={2}>Appears second</Reveal>
+<Reveal order={1} group="first">Appears first</Reveal>
+<Reveal order={1} group="first">Appears at the same time</Reveal>
+```
 
 ## Commands
 

@@ -3,15 +3,19 @@ import { getAnimationIndex } from "../lib/context";
 
 interface Props {
     group?: string;
+    order?: number;
+    auto?: true;
 }
 
-const { group } = Astro.props;
-const animationIndex = getAnimationIndex(group);
+const { group, order } = Astro.props;
+const animationIndex = getAnimationIndex(group, order);
 ---
 
 <div
     class="animation reveal thiscanbefixed thiscanbefixed2"
     data-animation={animationIndex}
+    data-animation-duration="0.5s"
+    data-animation-auto={Astro.props.auto ? "true" : undefined}
 >
     <slot />
     <noscript>
