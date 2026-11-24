@@ -90,6 +90,13 @@ const numSlides = slideComponents.length;
             })}
         </div>
     </div>
+    <progress
+        class="presentation-progress"
+        aria-label="Presentation progress"
+        max={numSlides}
+        value="1"
+        hidden
+    />
 
     <script define:vars={{ numSlides, slideHeights, SLIDE_WIDTH }}>
         function slideFromUrl() {
@@ -102,8 +109,8 @@ const numSlides = slideComponents.length;
         let currentSlide = slideFromUrl();
         const slides = document.querySelectorAll(".slide-container");
         const background = document.querySelector(".slide-background");
+        const progress = document.querySelector(".presentation-progress");
         let autoAnimationRun = 0;
-        let autoAnimationsRunning = false;
 
         function resizeBackground() {
             background.style.setProperty(
@@ -138,7 +145,8 @@ const numSlides = slideComponents.length;
         function setSlide(index) {
             const previousSlide = currentSlide;
             currentSlide = index;
-            autoAnimationsRunning = false;
+            progress.value = currentSlide + 1;
+            progress.hidden = false;
             const animationRun = ++autoAnimationRun;
             resizeBackground();
             slides.forEach((el, i) => {
@@ -157,9 +165,7 @@ const numSlides = slideComponents.length;
                     .querySelectorAll(
                         '.animation[data-animation-auto="true"].show',
                     )
-                    .forEach((animation) =>
-                        animation.classList.remove("show"),
-                    );
+                    .forEach((animation) => animation.classList.remove("show"));
             }
             runAutoAnimations(animationRun);
         }
@@ -170,22 +176,21 @@ const numSlides = slideComponents.length;
                     '.animation[data-animation-auto="true"]:not(.show)',
                 ),
             ).map((animation) => {
-                const duration =
-                    animation.dataset.animationDuration ?? "0s";
+                const duration = animation.dataset.animationDuration ?? "0s";
                 const match = duration.match(/^(\d*\.?\d+)(ms|s)$/);
                 if (!match) {
-                    throw new Error(`Invalid animation duration: "${duration}".`);
+                    throw new Error(
+                        `Invalid animation duration: "${duration}".`,
+                    );
                 }
 
                 return {
                     animation,
-                    duration:
-                        Number(match[1]) * (match[2] === "s" ? 1000 : 1),
+                    duration: Number(match[1]) * (match[2] === "s" ? 1000 : 1),
                 };
             });
             if (animations.length === 0) return;
 
-            autoAnimationsRunning = true;
             function revealNextAutoAnimation(index) {
                 if (animationRun !== autoAnimationRun) return;
 
@@ -195,22 +200,20 @@ const numSlides = slideComponents.length;
                     if (animationRun !== autoAnimationRun) return;
                     if (index + 1 < animations.length) {
                         revealNextAutoAnimation(index + 1);
-                    } else {
-                        autoAnimationsRunning = false;
                     }
                 }, duration);
             }
 
             window.requestAnimationFrame(() => {
-                window.requestAnimationFrame(() =>
-                    revealNextAutoAnimation(0),
-                );
+                window.requestAnimationFrame(() => revealNextAutoAnimation(0));
             });
         }
 
         function revealNextAnimation() {
             const hiddenAnimations = Array.from(
-                slides[currentSlide].querySelectorAll(".animation:not(.show)"),
+                slides[currentSlide].querySelectorAll(
+                    ".animation:not(.show):not([data-animation-auto='true'])",
+                ),
             );
             if (hiddenAnimations.length === 0) return false;
 
@@ -223,7 +226,7 @@ const numSlides = slideComponents.length;
                 Infinity,
             );
             const matchingAnimations = slides[currentSlide].querySelectorAll(
-                `.animation:not(.show)[data-animation="${lowestIndex}"]`,
+                `.animation:not(.show):not([data-animation-auto='true'])[data-animation="${lowestIndex}"]`,
             );
 
             matchingAnimations.forEach((animation) =>
@@ -277,8 +280,6 @@ const numSlides = slideComponents.length;
         });
 
         document.addEventListener("keydown", (e) => {
-            if (autoAnimationsRunning && e.key === "ArrowRight") return;
-
             if (e.key === "ArrowRight") {
                 if (revealNextAnimation()) return;
                 if (currentSlide >= numSlides - 1) return;
@@ -292,6 +293,34 @@ const numSlides = slideComponents.length;
     </script>
 
     <style>
+        .presentation-progress {
+            appearance: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 10;
+            width: 100%;
+            height: 4px;
+            border: 0;
+            background: transparent;
+            color: var(--color-kainos-blue);
+            pointer-events: none;
+        }
+
+        .presentation-progress::-webkit-progress-bar {
+            background: transparent;
+        }
+
+        .presentation-progress::-webkit-progress-value {
+            background: var(--color-kainos-blue);
+            transition: width 0.5s ease;
+        }
+
+        .presentation-progress::-moz-progress-bar {
+            background: var(--color-kainos-blue);
+            transition: width 0.5s ease;
+        }
+
         .slide-background::before {
             content: "";
             position: absolute;
@@ -327,6 +356,10 @@ const numSlides = slideComponents.length;
         }
 
         @media print {
+            .presentation-progress {
+                display: none;
+            }
+
             @page {
                 size: 1920px 1080px;
                 margin: 0;

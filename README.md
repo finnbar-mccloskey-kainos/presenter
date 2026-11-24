@@ -8,6 +8,7 @@ A slide deck framework built with [Astro](https://astro.build). Slides are Astro
 - **Presentation picker.** The home page (`/`) lists every presentation with its slide count.
 - **Keyboard navigation.** Use the <kbd>→</kbd> and <kbd>←</kbd> arrow keys to move between slides. Navigation wraps around at either end.
 - **Slide permalinks.** The URL updates as you navigate (for example `/example#slide-3`), so you can share or reload a link to a specific slide. Slide numbers start at 1.
+- **Slide progress.** A thin Kainos-blue bar along the bottom of the screen shows the current slide's position in the deck. It is hidden when printing or viewing without JavaScript.
 - **Automatic agenda.** The `Agenda` template links to slides that export a `sectionTitle` in the current presentation.
 - **JavaScript-free viewing.** With JavaScript disabled, slides appear in a scrollable list separated by small gaps, and agenda links and permalinks jump to their slides.
 - **Reusable templates.** The title, agenda, content, layout and code slide templates use the Kainos brand colours.
@@ -87,6 +88,10 @@ the slide a non-negative integer `order`: lower numbers appear first and equal
 numbers appear together. Reveals in the same group must have the same order.
 The left arrow hides steps in reverse order. All reveals remain visible when printing
 or viewing without JavaScript.
+
+Use `<Reveal auto>` to play a reveal automatically on slide entry. Auto reveals
+replay when returning to the slide and are skipped by keyboard navigation in both
+directions, so you can advance without waiting for them to finish.
 
 ```astro
 <Reveal order={2}>Appears second</Reveal>
